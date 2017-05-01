@@ -12,9 +12,10 @@ resource "aws_instance" "myfirstTF" {
 connection {
    user = "${lookup(var.user, var.platform)}"
    private_key = "${file("${var.key_path}")}"
- }
-
-
+     }
+provisioner "local-exec" {
+    command = "echo ${aws_instance.myfirstTF.public_ip} > ip_address.txt"
+     }
 }
 
 resource "aws_eip" "ip" {
@@ -57,6 +58,3 @@ resource "aws_security_group" "myec2instance" {
     }
 }
 
-provisioner "local-exec" {
-    command = "echo ${aws_instance.myfirstTF.public_ip} > ip_address.txt"
-}
